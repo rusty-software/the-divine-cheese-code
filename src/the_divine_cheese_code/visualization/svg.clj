@@ -28,9 +28,30 @@
 (defn latlng->point
   "Given a map containing lat and lng, returns those elements as a comma-delimited string of lng,lat."
   [{:keys [lat lng]}]
-  (str lat "," lng))
+  (str lng "," lat))
 
 (defn points
   "Given a sequence of location maps, returns the latlng points as a space-delimited string"
   [locations]
   (str/join " " (map latlng->point locations)))
+
+(defn line
+  [points]
+  (str "<polyline points=\"" points "\" />"))
+
+(defn transform
+  [width height locations]
+  (->> locations
+       (translate-to-00)
+       (scale width height)))
+
+(defn xml
+  [width height locations]
+  (str "<svg height=\"" height "\" width=\"" width "\">"
+       "<g transform=\"translate(0," height ") \">"
+       "<g transform=\"scale(1,-1)\">"
+       (-> (transform width height locations)
+           (points)
+           (line))
+       "</g></g>"
+       "</svg>"))
