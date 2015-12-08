@@ -1,5 +1,5 @@
 (ns the-divine-cheese-code.core
-  (require [the-divine-cheese-code.visualization.svg :as svg])
+  (:require [the-divine-cheese-code.visualization.svg :refer [points]])
   (:gen-class))
 
 (def heists
@@ -26,4 +26,4 @@
 
 (defn -main
   [& args]
-  (println (svg/points heists)))
+  (println (points heists)))
