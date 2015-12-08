@@ -11,6 +11,20 @@
 
 (def max (comparator-over-maps clojure.core/max [:lat :lng]))
 
+(defn translate-to-00
+  "Adjusts each location's lat and lng relative to the min coord"
+  [locations]
+  (let [min-coords (min locations)]
+    (map #(merge-with - % min-coords) locations)))
+
+(defn scale
+  "Scales the drawing to the relative width and height of the frame and the max coord"
+  [width height locations]
+  (let [max-coords (max locations)
+        ratio {:lat (/ height (:lat max-coords))
+               :lng (/ width (:lng max-coords))}]
+    (map #(merge-with * % ratio) locations)))
+
 (defn latlng->point
   "Given a map containing lat and lng, returns those elements as a comma-delimited string of lng,lat."
   [{:keys [lat lng]}]

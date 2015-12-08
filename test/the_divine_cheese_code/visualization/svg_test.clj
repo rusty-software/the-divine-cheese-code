@@ -19,3 +19,11 @@
 
 (deftest max-test
   (is (= {:lat 5 :lng 3} (max [{:lat 1 :lng 3} {:lat 5 :lng 0}]))))
+
+(deftest translate-to-00-test
+  (is (= [{:lat 0 :lng 0}] (translate-to-00 [{:lat 50 :lng 25}])))
+  (is (= [{:lat 10 :lng 0} {:lat 0 :lng 5}] (translate-to-00 [{:lat 50 :lng 25} {:lat 40 :lng 30}]))))
+
+(deftest scale-test
+  (is (= [{:lat 100 :lng 100}] (scale 100 100 [{:lat 50 :lng 25}])))
+  (is (= [{:lat 300 :lng 250} {:lat 240 :lng 300}] (scale 300 300 [{:lat 50 :lng 25} {:lat 40 :lng 30}]))))
